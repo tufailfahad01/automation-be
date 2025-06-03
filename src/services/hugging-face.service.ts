@@ -6,10 +6,10 @@ export class HuggingFaceService {
   async generateContent(prompt: string): Promise<string> {
     try {
       const hfApiKey = process.env.HUGGINGFACE_API_KEY || '';
-      const hfModel = process.env.HUGGINGFACE_MODEL || 'facebook/bart-large-cnn'; // Use a summarization model
+      const hfModel = process.env.HUGGINGFACE_MODEL || 'google/pegasus-cnn_dailymail';
       const hfUrl = `https://api-inference.huggingface.co/models/${hfModel}`;
       const hfPayload = {
-        inputs: prompt, // For summarization models, just pass the text
+        inputs: prompt,
         parameters: {
           max_length: 150,
           min_length: 30,
