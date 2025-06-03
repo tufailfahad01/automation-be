@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import axios from 'axios';
 
 @Injectable()
-export class GeminiService {
+export class HuggingFaceService {
   async generateContent(prompt: string): Promise<string> {
     try {
       const hfApiKey = process.env.HUGGINGFACE_API_KEY || '';
