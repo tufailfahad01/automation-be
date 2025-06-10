@@ -11,15 +11,15 @@ export class AutomationService {
     private readonly n8nService: N8nService,
   ) {}
 
-  async handlePrompt(prompt: string) {
+  async handlePrompt(title: string, content: string) {
     try {
-      // 1. Call Hugging Face API
-      const aiResponse = await this.huggingFaceService.generateContent(prompt);
-      // 2. Store in Supabase
-      await this.supabaseService.insertResponse(prompt, aiResponse);
+      // // 1. Call Hugging Face API
+      // const aiResponse = await this.huggingFaceService.generateContent(prompt);
+      // // 2. Store in Supabase
+      // await this.supabaseService.insertResponse(prompt, aiResponse);
       // 3. Trigger n8n webhook
-      await this.n8nService.triggerWebhook(prompt, aiResponse);
-      return { prompt, response: aiResponse };
+      const createDoc = await this.n8nService.triggerWebhook(title, content);
+      return { response: createDoc };
     } catch (error) {
       // Let the global filter handle the error, but optionally log here
       throw error;

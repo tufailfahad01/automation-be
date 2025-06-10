@@ -1,6 +1,7 @@
 import { Controller, Post, Body, BadRequestException, Get, Query, Param } from '@nestjs/common';
 import { AutomationService } from './automation.service';
 import { SupabaseService } from '../services/supabase.service';
+import { title } from 'process';
 
 @Controller()
 export class AutomationController {
@@ -10,13 +11,18 @@ export class AutomationController {
   ) {}
 
   @Post('api/process')
-  async processPrompt(@Body('prompt') prompt: string) {
-    if (!prompt || prompt.length < 200) {
-      throw new BadRequestException('Prompt must be at least 200 characters.');
+  async processPrompt(@Body('title') title: string, @Body('content') content: string) {
+    if (!title || title.length < 5) {
+      throw new BadRequestException('Title must be at least 5 characters.');
     }
+    if (!content || content.length < 50) {
+      throw new BadRequestException('Content must be at least 50 characters.');
+    }
+    // Convert escaped newlines (\n) to actual newlines
+    const normalizedContent = content.replace(/\\n/g, '\n');
     return {
       success: true,
-      data: await this.automationService.handlePrompt(prompt),
+      data: await this.automationService.handlePrompt(title, normalizedContent),
     };
   }
 
